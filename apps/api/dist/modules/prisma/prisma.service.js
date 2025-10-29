@@ -14,7 +14,6 @@ let PrismaService = class PrismaService extends client_1.PrismaClient {
         await this.$connect();
     }
     async enableShutdownHooks(app) {
-        // @ts-expect-error: Prisma event typing issue
         this.$on('beforeExit', async () => {
             await app.close();
         });
