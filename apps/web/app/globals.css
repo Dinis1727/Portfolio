@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========
+   THEME BASE
+   ========== */
+:root {
+  color-scheme: light dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  @apply text-slate-900 dark:text-slate-100;
+  background: radial-gradient(circle at top, #f8fafc 0%, #e2e8f0 100%);
+  @apply dark:bg-[radial-gradient(circle_at_top,_#0f172a_0%,_#020617_100%)];
+  transition: background 0.5s ease, color 0.5s ease;
+}
+
+/* ==========
+   GLOBAL STYLES
+   ========== */
+a {
+  @apply transition-colors duration-300;
+}
+
+button {
+  @apply focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900;
+}
+
+/* ==========
+   ANIMATIONS
+   ========== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gradient-move {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* ==========
+   ANIMATION HELPERS
+   ========== */
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.25s ease-out forwards;
+}
+
+.animate-fadeUp {
+  animation: fadeUp 0.4s ease-out forwards;
+}
+
+.animate-gradient-move {
+  background-size: 200% 200%;
+  animation: gradient-move 4s ease infinite;
+}
+
+/* ==========
+   SCROLLBAR STYLING
+   ========== */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-slate-900/20 dark:bg-slate-700/10;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-500/50 hover:bg-slate-400/70 rounded-full transition-colors;
+}

@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: portfolio-api
+    env: node
+    rootDir: apps/api
+    buildCommand: pnpm i --filter api --frozen-lockfile && pnpm -C apps/api prisma generate && pnpm -C apps/api build
+    startCommand: node dist/main.js
+    plan: free
+    envVars:
+      - key: NODE_ENV
+        value: production
+    healthCheckPath: /docs
+    autoDeploy: true
+    region: frankfurt
+    runtime: node
+    repo: https://github.com/teu-user/portfolio-monorepo
+
+databases:
+  - name: portfolio-db
+    plan: free
