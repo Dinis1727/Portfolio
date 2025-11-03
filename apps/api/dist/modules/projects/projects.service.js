@@ -23,6 +23,11 @@ let ProjectsService = class ProjectsService {
     create(dto) {
         return this.prisma.project.create({ data: dto });
     }
+    async deleteProject(id) {
+        return this.prisma.project.delete({
+            where: { id },
+        });
+    }
 };
 exports.ProjectsService = ProjectsService;
 exports.ProjectsService = ProjectsService = __decorate([

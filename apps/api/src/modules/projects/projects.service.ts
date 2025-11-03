@@ -13,4 +13,10 @@ export class ProjectsService {
 	create(dto: CreateProjectDto) {
 		return this.prisma.project.create({ data: dto })
 	}
+  
+	async deleteProject(id: number) {
+		return this.prisma.project.delete({
+			where: { id },
+		});
+	}
 }
