@@ -10,7 +10,7 @@ export class ContactService {
       data: { name, email, message },
     })
 
-    console.log('💾 Contact saved to database:', contact)
+    console.log('Contact saved to database:', contact)
     return contact
   }
 }

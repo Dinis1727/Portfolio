@@ -8,7 +8,7 @@ export class ContactController {
 
   @Post()
   async create(@Body() dto: CreateContactDto) {
-    console.log('📩 Contact received:', dto)
+    console.log('Contact received:', dto)
     return this.contactService.create(dto)
   }
 }

@@ -60,7 +60,6 @@ pnpm dev
 
 ```sh
 pnpm --filter api build
-pnpm --filter api start
 ```
 
 The API will be available at `http://localhost:3001` (or the configured port).

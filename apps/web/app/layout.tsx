@@ -24,10 +24,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {children}
           </div>
         </main>
-
-        <footer className="mt-12 text-center text-sm text-slate-500 pb-6">
-          © {new Date().getFullYear()} Dinis Félix — Built with <span className="text-indigo-400">Next.js</span>, <span className="text-cyan-400">Tailwind</span> & <span className="text-pink-400">Prisma ⚡</span>
-        </footer>
       </body>
     </html>
   )

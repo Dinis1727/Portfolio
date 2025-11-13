@@ -28,7 +28,7 @@ export default function Home() {
 
   const skills = [
     'Node.js', 'NestJS', 'TypeScript', 'PostgreSQL',
-    'Next.js', 'React', 'C#', 'Java', 'JavaScript'
+    'Next.js', 'React', 'JavaScript', 'C#', 'Java'
   ]
 
   return (
@@ -39,17 +39,11 @@ export default function Home() {
           <h1 className="text-5xl font-bold text-slate-100">
             Hello, I'm <span className="text-indigo-400">Dinis Félix</span>.
           </h1>
-          <button
-            onClick={() => document.getElementById('contact-modal')?.classList.remove('hidden')}
-            className="border border-slate-600 hover:border-indigo-400 text-slate-300 hover:text-indigo-300 px-4 py-2 rounded-lg transition"
-          >
-            Contact
-          </button>
         </header>
 
         <section id="about">
           <h2 className="text-xl font-semibold text-slate-200">About Me</h2>
-          <p className="text-slate-400 mt-3 leading-relaxed max-w-2xl">
+          <p className="text-slate-400 mt-3 leading-relaxed max-w-2xl text-justify">
             Software Engineer specialized in back-end and full-stack development.
             Experienced in building scalable APIs and modern web applications using
             <strong> Node.js</strong>, <strong>NestJS</strong>, <strong>PostgreSQL</strong>, and <strong>Next.js</strong>.
@@ -90,7 +84,7 @@ export default function Home() {
         </section>
 
         <footer className="text-slate-500 text-sm border-t border-slate-800 pt-6 mt-10">
-          © {new Date().getFullYear()} Dinis Félix — Built with Next.js, Tailwind & Prisma ⚡
+          © {new Date().getFullYear()} Dinis Félix — Built with Next.js, Tailwind & Prisma
         </footer>
       </div>
 
