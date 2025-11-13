@@ -7,7 +7,8 @@ This project is a monorepo with a backend (NestJS + Prisma) and a frontend (Next
 
 - `apps/api`: Backend (NestJS, Prisma)
 - `apps/web`: Frontend (Next.js, Tailwind CSS)
-- `infra/`: Infrastructure files (deploy, Docker, etc)
+- `infra/`: Deployment, CI/CD, Docker, and configuration files
+- `prisma/`: Centralized Prisma schema and migrations
 
 ## Prerequisites
 
@@ -27,6 +28,20 @@ pnpm install
 
 Copy the `.env.example` files to `.env` in both `apps/api` and `apps/web` and adjust as needed.
 
+```sh
+cp apps/api/.env.example apps/api/.env
+cp apps/web/.env.example apps/web/.env
+```
+
+## Running Server
+
+1. Run migrations and seed the database
+
+```sh
+pnpm prisma migrate dev --schema=prisma/schema.prisma
+pnpm prisma db seed --schema=prisma/schema.prisma      # optional
+```
+
 ## Running the Backend (API)
 
 1. Go to the backend folder:
@@ -35,16 +50,17 @@ Copy the `.env.example` files to `.env` in both `apps/api` and `apps/web` and ad
 cd apps/api
 ```
 
-2. Run database migrations:
+2. Run backend:
 
 ```sh
-pnpm prisma migrate dev
+pnpm dev
 ```
 
-3. Start the server:
+### For a production build:
 
 ```sh
-pnpm start:dev
+pnpm --filter api build
+pnpm --filter api start
 ```
 
 The API will be available at `http://localhost:3001` (or the configured port).
@@ -65,22 +81,11 @@ pnpm dev
 
 The site will be available at `http://localhost:3000`.
 
-## Tests
-
-### Backend
-
-In the `apps/api` folder:
+### For a production build:
 
 ```sh
-pnpm test
-```
-
-### Frontend
-
-In the `apps/web` folder (if tests are configured):
-
-```sh
-pnpm test
+pnpm --filter web build
+pnpm --filter web start
 ```
 
 ## Features
@@ -88,12 +93,14 @@ pnpm test
 - Create, list, and delete projects (API and web interface)
 - Contact registration
 - Database integration via Prisma
-- Deploy with Docker, Vercel, Render, etc
+- Deploy with Docker, Vercel, Render, Neon, etc
 
 ## Other tips
 
-- Use `pnpm prisma studio` in `apps/api` to manage the database with a visual interface.
-- The `docker-compose.yml` file can be used to start auxiliary services (e.g., local database).
+- Use `pnpm prisma studio --schema=prisma/schema.prisma` to run prisma studio(visual DB UI) from the root.
+- Use `pnpm lint` to lint all apps.
+- Use `pnpm format` to format code with Prettier.
+- The `docker-compose.yml` can be used to spin up local services (e.g. PostgreSQL).
 
 ---
 
