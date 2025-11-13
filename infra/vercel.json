@@ -1,9 +1,0 @@
-{
-"version": 2,
-    "buildCommand": "pnpm i && pnpm -C apps/web build",
-    "devCommand": "pnpm -C apps/web dev",
-    "installCommand": "pnpm i",
-    "env": {
-        "NEXT_PUBLIC_API_URL": "https://portfolio-api.onrender.com"
-    }
-}

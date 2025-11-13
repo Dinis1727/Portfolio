@@ -5,7 +5,9 @@
     "dev": "pnpm -r --filter ./apps/* run dev",
     "build": "pnpm -r --filter ./apps/* run build",
     "lint": "pnpm -r --filter ./apps/* run lint",
-    "format": "prettier -w ."
+    "format": "prettier -w .",
+    "prisma:deploy": "prisma migrate deploy --schema=prisma/schema.prisma",
+    "prisma:seed": "ts-node prisma/seed.ts"
   },
   "workspaces": [
     "apps/*"

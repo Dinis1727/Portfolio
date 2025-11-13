@@ -7,29 +7,43 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+
       - name: Setup pnpm
         run: |
           corepack enable
-          corepack prepare pnpm@9.0.0 --activate
-      - run: pnpm install --filter api
-      - run: pnpm --filter api prisma generate
-      - run: pnpm --filter api build
+          corepack prepare pnpm@10.0.0 --activate
+
+      - name: Install dependencies (root)
+        run: pnpm install
+
+      - name: Generate Prisma Client
+        run: pnpm --filter api prisma generate --schema=prisma/schema.prisma
+
+      - name: Build API
+        run: pnpm --filter api build
+
 
   web:
     name: Build Web
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+
       - name: Setup pnpm
         run: |
           corepack enable
-          corepack prepare pnpm@9.0.0 --activate
-      - run: pnpm install --filter web
-      - run: pnpm -C apps/web add -D critters
-      - run: pnpm --filter web build
+          corepack prepare pnpm@10.0.0 --activate
+
+      - name: Install dependencies (root)
+        run: pnpm install
+
+      - name: Build Web
+        run: pnpm --filter web build
