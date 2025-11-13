@@ -1,0 +1,39 @@
+services:
+  # ---------------------------
+  #    API (NestJS + Prisma)
+  # ---------------------------
+  - type: web
+    name: portfolio-api
+    rootDir: apps/api
+    env: node
+    region: frankfurt
+    plan: free
+    buildCommand: |
+      pnpm install --filter api...
+      pnpm --filter api generate
+      pnpm --filter api build
+    startCommand: pnpm --filter api start:prod
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: PORT
+        value: 3001
+
+  # ---------------------------
+  #        WEB (Next.js)
+  # ---------------------------
+  - type: web
+    name: portfolio-web
+    rootDir: apps/web
+    env: node
+    region: frankfurt
+    plan: free
+    buildCommand: |
+      pnpm install --filter web...
+      pnpm --filter web build
+    startCommand: pnpm --filter web start
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        sync: false
