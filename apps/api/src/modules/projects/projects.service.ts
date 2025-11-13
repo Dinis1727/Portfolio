@@ -7,15 +7,15 @@ export class ProjectsService {
 	constructor(private prisma: PrismaService) {}
 
 	list() {
-		return this.prisma.project.findMany({ orderBy: { createdAt: 'desc' } })
+		return (this.prisma as any).project.findMany({ orderBy: { createdAt: 'desc' } })
 	}
 
 	create(dto: CreateProjectDto) {
-		return this.prisma.project.create({ data: dto })
+		return (this.prisma as any).project.create({ data: dto })
 	}
   
 	async deleteProject(id: number) {
-		return this.prisma.project.delete({
+		return (this.prisma as any).project.delete({
 			where: { id },
 		});
 	}
