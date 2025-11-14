@@ -6,9 +6,13 @@ import Contact from './components/Contact'
 import ProjectCard from './components/ProjectCard'
 import { Github, Linkedin, Mail, Instagram } from 'lucide-react'
 
+const fullName = 'Dinis Félix'
+
 export default function Home() {
   const [projects, setProjects] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const [typedName, setTypedName] = useState('')
+  const [caretVisible, setCaretVisible] = useState(true)
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -26,6 +30,24 @@ export default function Home() {
     fetchProjects()
   }, [])
 
+  useEffect(() => {
+    let index = 0
+    setTypedName('')
+    const typingInterval = setInterval(() => {
+      setTypedName(fullName.slice(0, index + 1))
+      index++
+      if (index === fullName.length) {
+        clearInterval(typingInterval)
+      }
+    }, 120)
+    return () => clearInterval(typingInterval)
+  }, [])
+
+  useEffect(() => {
+    const blink = setInterval(() => setCaretVisible(prev => !prev), 500)
+    return () => clearInterval(blink)
+  }, [])
+
   const skills = [
     'Node.js', 'NestJS', 'TypeScript', 'PostgreSQL',
     'Next.js', 'React', 'JavaScript', 'C#', 'Java'
@@ -37,11 +59,19 @@ export default function Home() {
       <div className="flex-1 space-y-10">
         <header className="flex items-center justify-between">
           <h1 className="text-5xl font-bold text-slate-100">
-            Hello, I'm <span className="text-indigo-400">Dinis Félix</span>.
+            Hello, I'm{' '}
+            <span className="text-indigo-400 inline-flex items-center">
+              {typedName}
+              <span
+                aria-hidden
+                className={`ml-1 block h-8 w-[3px] bg-indigo-300 ${caretVisible ? 'opacity-100' : 'opacity-0'} transition-opacity duration-200`}
+              ></span>
+            </span>
+            .
           </h1>
         </header>
 
-        <section id="about">
+        <section id="about" className="scroll-mt-40">
           <h2 className="text-xl font-semibold text-slate-200">About Me</h2>
           <p className="text-slate-400 mt-3 leading-relaxed max-w-2xl text-justify">
             Software Engineer specialized in back-end and full-stack development.
@@ -50,7 +80,7 @@ export default function Home() {
           </p>
         </section>
 
-        <section>
+        <section className="scroll-mt-40">
           <h2 className="text-xl font-semibold text-slate-200 mb-3">Skills</h2>
           <ul className="flex flex-wrap gap-3">
             {skills.map(skill => (
@@ -64,7 +94,7 @@ export default function Home() {
           </ul>
         </section>
 
-        <section id="projects" className="space-y-5">
+        <section id="projects" className="space-y-5 scroll-mt-40">
           <h2 className="text-xl font-semibold text-slate-200">Projects</h2>
           {loading ? (
             <p className="text-slate-500">Loading projects...</p>

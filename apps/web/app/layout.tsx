@@ -19,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Navbar />
 
         {/* Main content area */}
-        <main className="flex justify-center items-start min-h-screen px-6 sm:px-10 pt-28 pb-24">
+        <main className="flex justify-center items-start min-h-screen px-6 sm:px-10 pt-32 pb-24">
           <div className="w-full max-w-6xl p-12 rounded-3xl bg-slate-900/70 border border-slate-800 shadow-2xl shadow-black/50 backdrop-blur-lg transition-all duration-500 animate-fadeIn">
             {children}
           </div>

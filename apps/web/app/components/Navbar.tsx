@@ -16,7 +16,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 w-full z-50 px-6 sm:px-10 transition-all duration-300 ${
         isScrolled
           ? 'bg-slate-900/80 backdrop-blur-md border-b border-slate-800'
           : 'bg-transparent'
@@ -29,21 +29,24 @@ export default function Navbar() {
         }`}
       ></div>
 
-      <div className="max-w-5xl mx-auto flex items-center justify-between px-6 py-4 relative">
+      <div className="max-w-6xl mx-auto flex items-center justify-between py-6 relative">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-3">
           <Image
-            src="/logo.png"
+            src="/logo-wb.png"
             alt="Dinis Félix logo"
-            width={40}
-            height={40}
+            width={70}
+            height={70}
             priority
-            className="hover:scale-110 transition-transform drop-shadow-[0_0_6px_rgba(99,102,241,0.6)]"
+            className="hover:scale-105 transition-transform drop-shadow-[0_0_22px_rgba(79,70,229,0.55)]"
           />
-          <span className="sr-only">Dinis Félix</span>
+          <div className="leading-tight">
+            <p className="text-white font-semibold tracking-wide text-lg">DINIS FÉLIX</p>
+            <p className="text-cyan-300 tracking-[0.35em] text-sm">FULL-STACK</p>
+          </div>
         </Link>
 
-        {/* 🔹 Navigation links */}
+        {/* Navigation links */}
         <ul className="hidden sm:flex items-center gap-6 text-slate-300 text-sm">
           <li>
             <Link href="#about" className="hover:text-indigo-300 transition">
