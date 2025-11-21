@@ -121,7 +121,7 @@ export default function Home() {
       {/* Right side - profile */}
       <div className="flex-shrink-0 self-center flex flex-col items-center">
         <div className="relative w-64 h-64 rounded-full overflow-hidden border-4 border-indigo-400 shadow-lg hover:scale-105 transition-transform">
-          <Image src="/profile.jpg" alt="Dinis Félix" fill className="object-cover" />
+          <Image src="/profile.png" alt="Dinis Félix" fill className="object-cover" />
         </div>
 
         {/* Social Icons */}

@@ -1,106 +1,77 @@
 
 # Portfolio Monorepo
 
-This project is a monorepo with a backend (NestJS + Prisma) and a frontend (Next.js + Tailwind CSS) for a personal portfolio.
+Personal portfolio monorepo with a NestJS + Prisma backend and a Next.js + Tailwind CSS frontend, using pnpm workspaces.
 
-## Project Structure
+## Structure
 
-- `apps/api`: Backend (NestJS, Prisma)
-- `apps/web`: Frontend (Next.js, Tailwind CSS)
-- `infra/`: Deployment, CI/CD, Docker, and configuration files
-- `prisma/`: Centralized Prisma schema and migrations
+- `apps/api`: NestJS API (Prisma + PostgreSQL)
+- `apps/web`: Next.js frontend (App Router, Tailwind)
+- `prisma/`: centralized schema and migrations
+- `infra/`: Docker/CI/CD and deployment configs
 
-## Prerequisites
+## Requirements
 
-- Node.js (v18+ recommended)
-- pnpm (or npm/yarn)
-- Docker (optional, for running a local database)
+- Node.js 18+
+- pnpm
+- PostgreSQL locally or via Docker (`docker compose up -d postgres`)
+- (Optional) `sharp` to optimize images in production (`pnpm --filter web add sharp`)
 
-## Installation
+## Setup
 
-1. Install dependencies:
-
+1) Install dependencies
 ```sh
 pnpm install
 ```
 
-2. Configure environment variables:
-
-Copy the `.env.example` files to `.env` in both `apps/api` and `apps/web` and adjust as needed.
-
+2) Environment variables  
+Copy the examples and adjust URLs/ports:
 ```sh
 cp apps/api/.env.example apps/api/.env
 cp apps/web/.env.example apps/web/.env
 ```
+`DATABASE_URL` must point to Postgres and `NEXT_PUBLIC_API_URL` to the API (default `http://localhost:4000`).
 
-## Running Server
-
-1. Run migrations and seed the database
-
+3) Database  
 ```sh
 pnpm prisma migrate dev --schema=prisma/schema.prisma
-pnpm prisma db seed --schema=prisma/schema.prisma      # optional
+pnpm prisma db seed --schema=prisma/schema.prisma   # optional
 ```
 
-## Running the Backend (API)
+## Development
 
-1. Go to the backend folder:
+- API: `pnpm --filter api dev` (runs at `http://localhost:4000`)
+- Web: `pnpm --filter web dev` (uses `NEXT_PUBLIC_API_URL` to fetch `/projects`)
+- Run everything via workspaces: `pnpm dev`
 
-```sh
-cd apps/api
-```
+## Build and local production
 
-2. Run backend:
+- API:  
+  ```sh
+  pnpm --filter api build
+  pnpm --filter api start   # listens on http://localhost:4000
+  ```
 
-```sh
-pnpm dev
-```
+- Web:  
+  ```sh
+  pnpm --filter web build
+  pnpm --filter web start   # listens on http://localhost:3000
+  ```
 
-### For a production build:
+Note: Next.js recommends installing `sharp` for production image optimization.
 
-```sh
-pnpm --filter api build
-```
+## Main API endpoints
 
-The API will be available at `http://localhost:3001` (or the configured port).
+- `GET /projects` — list projects
+- `POST /projects` — create project
+- `POST /contact` — register contact
 
-## Running the Frontend (Web)
+## Useful scripts
 
-1. Go to the frontend folder:
-
-```sh
-cd apps/web
-```
-
-2. Start the development server:
-
-```sh
-pnpm dev
-```
-
-The site will be available at `http://localhost:3000`.
-
-### For a production build:
-
-```sh
-pnpm --filter web build
-pnpm --filter web start
-```
-
-## Features
-
-- Create, list, and delete projects (API and web interface)
-- Contact registration
-- Database integration via Prisma
-- Deploy with Docker, Vercel, Render, Neon, etc
-
-## Other tips
-
-- Use `pnpm prisma studio --schema=prisma/schema.prisma` to run prisma studio(visual DB UI) from the root.
-- Use `pnpm lint` to lint all apps.
-- Use `pnpm format` to format code with Prettier.
-- The `docker-compose.yml` can be used to spin up local services (e.g. PostgreSQL).
-
----
+- `pnpm lint` — lint all apps
+- `pnpm format` — format with Prettier
+- `pnpm prisma:deploy` — `prisma migrate deploy` (production)
+- `pnpm prisma:seed` — run seed (`prisma/seed.ts`)
+- `pnpm prisma studio --schema=prisma/schema.prisma` — DB UI
 
 Contributions and suggestions are welcome!

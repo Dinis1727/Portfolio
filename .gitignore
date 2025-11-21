@@ -23,7 +23,9 @@ pnpm-debug.log*
 # Build outputs
 dist/
 .next/
+apps/*/.next/
 out/
+apps/*/out/
 
 # Coverage
 coverage/
@@ -37,6 +39,7 @@ Thumbs.db
 
 # Vercel project settings
 .vercel/
+apps/*/.vercel/
 
 # Turbo (if ever used)
 .turbo/
@@ -44,3 +47,6 @@ Thumbs.db
 # SQLite DBs (if used locally)
 *.db
 *.db-journal
+
+# Package manager cache
+.pnpm-store/
