@@ -22,7 +22,7 @@ let ContactController = class ContactController {
         this.contactService = contactService;
     }
     async create(dto) {
-        console.log('📩 Contact received:', dto);
+        console.log('Contact received:', dto);
         return this.contactService.create(dto);
     }
 };

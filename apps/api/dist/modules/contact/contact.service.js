@@ -21,7 +21,7 @@ let ContactService = class ContactService {
         const contact = await this.prisma.contact.create({
             data: { name, email, message },
         });
-        console.log('💾 Contact saved to database:', contact);
+        console.log('Contact saved to database:', contact);
         return contact;
     }
 };
