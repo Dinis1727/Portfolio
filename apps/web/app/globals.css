@@ -2,11 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ==========
-   THEME BASE
-   ========== */
 :root {
-  color-scheme: light dark;
+  color-scheme: dark;
+  --page-bg: #020617;
+  --hero-left-bg: #020617;
+  --hero-right-bg: #020617;
+  --surface: #020617;
+  --surface-alt: #020617;
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --muted: #94a3b8;
+  --line: #334155;
+  --line-strong: #475569;
+  --accent: #818cf8;
+  --accent-soft: #c7d2fe;
+  --button-primary-bg: #e2e8f0;
+  --button-primary-text: #0f172a;
+  --button-secondary-text: #e2e8f0;
+}
+
+html[data-theme='light'] {
+  color-scheme: light;
+  --page-bg: #ffffff;
+  --hero-left-bg: #ffffff;
+  --hero-right-bg: #ffffff;
+  --surface: #ffffff;
+  --surface-alt: #ffffff;
+  --text-primary: #0f172a;
+  --text-secondary: #1e293b;
+  --muted: #64748b;
+  --line: #cbd5e1;
+  --line-strong: #94a3b8;
+  --accent: #4f46e5;
+  --accent-soft: #6366f1;
+  --button-primary-bg: #0f172a;
+  --button-primary-text: #f8fafc;
+  --button-secondary-text: #0f172a;
+}
+
+html[data-theme='dark'] {
+  color-scheme: dark;
 }
 
 html {
@@ -15,26 +50,88 @@ html {
 
 body {
   font-family: 'Inter', sans-serif;
-  @apply text-slate-900 dark:text-slate-100;
-  background: radial-gradient(circle at top, #f8fafc 0%, #e2e8f0 100%);
-  @apply dark:bg-[radial-gradient(circle_at_top,_#0f172a_0%,_#020617_100%)];
-  transition: background 0.5s ease, color 0.5s ease;
+  font-weight: 300;
+  margin: 0;
 }
 
-/* ==========
-   GLOBAL STYLES
-   ========== */
+html.theme-switching *,
+html.theme-switching *::before,
+html.theme-switching *::after {
+  transition: none !important;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
 a {
   @apply transition-colors duration-300;
 }
 
 button {
-  @apply focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900;
+  @apply focus:outline-none focus:ring-2 focus:ring-indigo-500;
 }
 
-/* ==========
-   ANIMATIONS
-   ========== */
+.hamburgerButton {
+  position: relative;
+  width: 22px;
+  height: 18px;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  transition: color 0.2s ease;
+}
+
+.hamburgerLine {
+  display: block;
+  width: 22px;
+  height: 2px;
+  border-radius: 999px;
+  background: currentColor;
+  transform-origin: center;
+  transition:
+    transform 0.26s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.2s ease;
+}
+
+.hamburgerButton.is-open .line1 {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.hamburgerButton.is-open .line2 {
+  opacity: 0;
+  transform: scaleX(0.2);
+}
+
+.hamburgerButton.is-open .line3 {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+.header-scroll-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  opacity: 0;
+  background: linear-gradient(90deg, #06b6d4, #60a5fa, #06b6d4);
+  background-size: 200% 200%;
+  transition: opacity 0.25s ease;
+}
+
+.header-scroll-line.is-visible {
+  opacity: 1;
+  animation: header-line-move 3.5s linear infinite;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -66,21 +163,15 @@ button {
   }
 }
 
-@keyframes gradient-move {
+@keyframes header-line-move {
   0% {
     background-position: 0% 50%;
   }
-  50% {
-    background-position: 100% 50%;
-  }
   100% {
-    background-position: 0% 50%;
+    background-position: 200% 50%;
   }
 }
 
-/* ==========
-   ANIMATION HELPERS
-   ========== */
 .animate-fadeIn {
   animation: fadeIn 0.3s ease-out forwards;
 }
@@ -93,20 +184,14 @@ button {
   animation: fadeUp 0.4s ease-out forwards;
 }
 
-.animate-gradient-move {
-  background-size: 200% 200%;
-  animation: gradient-move 4s ease infinite;
+html,
+body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-/* ==========
-   SCROLLBAR STYLING
-   ========== */
-::-webkit-scrollbar {
-  width: 10px;
-}
-::-webkit-scrollbar-track {
-  @apply bg-slate-900/20 dark:bg-slate-700/10;
-}
-::-webkit-scrollbar-thumb {
-  @apply bg-slate-500/50 hover:bg-slate-400/70 rounded-full transition-colors;
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }

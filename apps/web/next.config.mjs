@@ -31,10 +31,8 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
 
-  // Garante paths limpos na build
-  experimental: {
-    optimizeCss: true,
-  },
+  // Mantem config estavel em producao
+  experimental: {},
 };
 
 export default nextConfig;

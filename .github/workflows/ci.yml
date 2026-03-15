@@ -20,9 +20,6 @@ jobs:
       - name: Install dependencies (root)
         run: pnpm install
 
-      - name: Generate Prisma Client
-        run: pnpm --filter api prisma generate --schema=prisma/schema.prisma
-
       - name: Build API
         run: pnpm --filter api build
 

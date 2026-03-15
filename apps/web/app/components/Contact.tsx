@@ -1,6 +1,9 @@
 'use client'
+
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
+
+type Locale = 'pt' | 'en'
 
 type ContactErrors = {
   name?: string
@@ -8,15 +11,76 @@ type ContactErrors = {
   message?: string
 }
 
+const copy = {
+  pt: {
+    openButton: 'Contactar',
+    modalTitle: 'Enviar Mensagem',
+    success: 'Obrigado! Vou responder em breve.',
+    namePlaceholder: 'O teu nome',
+    emailPlaceholder: 'O teu email',
+    messagePlaceholder: 'A tua mensagem...',
+    submit: 'Enviar Mensagem',
+    sending: 'A enviar...',
+    requestNoLinks: 'Descreve o teu pedido sem links.',
+    failedRequest: 'Falha ao enviar mensagem. Tenta novamente.',
+    errors: {
+      nameRequired: 'Por favor, insere o teu nome.',
+      nameLettersOnly: 'O nome deve conter apenas letras.',
+      emailRequired: 'O email é obrigatório.',
+      emailInvalid: 'Por favor, insere um email válido.',
+      messageMin: 'A mensagem deve ter pelo menos 10 caracteres.',
+      messageLettersMin: 'A mensagem deve conter pelo menos 5 letras.',
+      messageNoLinks: 'Descreve o teu pedido sem links.',
+    },
+  },
+  en: {
+    openButton: 'Contact Me',
+    modalTitle: 'Send a Message',
+    success: 'Thanks! I will get back to you soon.',
+    namePlaceholder: 'Your name',
+    emailPlaceholder: 'Your email',
+    messagePlaceholder: 'Your message...',
+    submit: 'Send Message',
+    sending: 'Sending...',
+    requestNoLinks: 'Please describe your request without links.',
+    failedRequest: 'Failed to send message. Please try again.',
+    errors: {
+      nameRequired: 'Please enter your name.',
+      nameLettersOnly: 'Name must contain only letters.',
+      emailRequired: 'Email is required.',
+      emailInvalid: 'Please enter a valid email address.',
+      messageMin: 'Message should be at least 10 characters.',
+      messageLettersMin: 'Message must contain at least 5 letters.',
+      messageNoLinks: 'Please describe your request without links.',
+    },
+  },
+} as const
+
 export default function Contact() {
   const [isOpen, setIsOpen] = useState(false)
   const [ok, setOk] = useState(false)
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState<ContactErrors>({})
   const [mounted, setMounted] = useState(false)
+  const [locale, setLocale] = useState<Locale>('pt')
   const scrollLockRef = useRef(0)
 
+  const t = copy[locale]
+
   useEffect(() => setMounted(true), [])
+
+  useEffect(() => {
+    const storedLocale = (localStorage.getItem('portfolio:language') as Locale | null) ?? 'pt'
+    setLocale(storedLocale)
+
+    const onSettingsChanged = (event: Event) => {
+      const detail = (event as CustomEvent<{ language?: Locale }>).detail
+      if (detail?.language) setLocale(detail.language)
+    }
+
+    window.addEventListener('portfolio:settings-changed', onSettingsChanged)
+    return () => window.removeEventListener('portfolio:settings-changed', onSettingsChanged)
+  }, [])
 
   useEffect(() => {
     if (!mounted) return
@@ -69,23 +133,23 @@ export default function Contact() {
 
     const newErrors: ContactErrors = {}
     if (!name || name.length < 2) {
-      newErrors.name = 'Please enter your name.'
+      newErrors.name = t.errors.nameRequired
     } else if (!/^[A-Za-zÀ-ÖØ-öø-ÿ' -]+$/.test(name)) {
-      newErrors.name = 'Name must contain only letters.'
+      newErrors.name = t.errors.nameLettersOnly
     }
 
     if (!email) {
-      newErrors.email = 'Email is required.'
+      newErrors.email = t.errors.emailRequired
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      newErrors.email = 'Please enter a valid email address.'
+      newErrors.email = t.errors.emailInvalid
     }
 
     if (!message || message.length < 10) {
-      newErrors.message = 'Message should be at least 10 characters.'
+      newErrors.message = t.errors.messageMin
     } else if ((message.match(/[A-Za-zÀ-ÖØ-öø-ÿ]/g) ?? []).length < 5) {
-      newErrors.message = 'Message must contain at least 5 letters.'
+      newErrors.message = t.errors.messageLettersMin
     } else if (/https?:\/\//i.test(message)) {
-      newErrors.message = 'Please describe your request without links.'
+      newErrors.message = t.errors.messageNoLinks
     }
 
     if (Object.keys(newErrors).length) {
@@ -109,7 +173,7 @@ export default function Contact() {
       }, 2000)
     } catch (err) {
       console.error('Failed to send message:', err)
-      alert('Failed to send message. Please try again.')
+      alert(t.failedRequest)
     } finally {
       setLoading(false)
     }
@@ -117,15 +181,13 @@ export default function Contact() {
 
   return (
     <>
-      {/* Main Button */}
       <button
         onClick={() => setIsOpen(true)}
         className="border border-slate-600 hover:border-indigo-400 text-slate-300 hover:text-indigo-300 px-4 py-2 rounded-lg transition"
       >
-        Contact Me
+        {t.openButton}
       </button>
 
-      {/* Overlay via portal */}
       {mounted && isOpen
         ? createPortal(
             <div
@@ -134,7 +196,7 @@ export default function Contact() {
             >
               <div
                 className="bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl p-8 w-full max-w-md relative animate-scaleIn"
-                onClick={(e) => e.stopPropagation()}
+                onClick={e => e.stopPropagation()}
               >
                 <button
                   onClick={closeModal}
@@ -143,16 +205,16 @@ export default function Contact() {
                   ✕
                 </button>
 
-                <h2 className="text-xl font-semibold text-slate-100 mb-4">Send a Message</h2>
+                <h2 className="text-xl font-semibold text-slate-100 mb-4">{t.modalTitle}</h2>
 
                 {ok ? (
-                  <p className="text-emerald-500 text-sm">Thanks! I’ll get back to you soon.</p>
+                  <p className="text-emerald-500 text-sm">{t.success}</p>
                 ) : (
                   <form onSubmit={handleSubmit} className="grid gap-4">
                     <div className="space-y-1">
                       <input
                         name="name"
-                        placeholder="Your name"
+                        placeholder={t.namePlaceholder}
                         className="w-full rounded-lg border border-slate-700 bg-slate-800 p-3 text-slate-200 focus:border-indigo-400 focus:outline-none"
                         aria-invalid={Boolean(errors.name)}
                         aria-describedby={errors.name ? 'contact-name-error' : undefined}
@@ -170,7 +232,7 @@ export default function Contact() {
                       <input
                         name="email"
                         type="email"
-                        placeholder="Your email"
+                        placeholder={t.emailPlaceholder}
                         className="w-full rounded-lg border border-slate-700 bg-slate-800 p-3 text-slate-200 focus:border-indigo-400 focus:outline-none"
                         aria-invalid={Boolean(errors.email)}
                         aria-describedby={errors.email ? 'contact-email-error' : undefined}
@@ -188,7 +250,7 @@ export default function Contact() {
                       <textarea
                         name="message"
                         rows={4}
-                        placeholder="Your message..."
+                        placeholder={t.messagePlaceholder}
                         className="w-full min-h-[140px] max-h-[220px] resize-none rounded-lg border border-slate-700 bg-slate-800 p-3 text-slate-200 focus:border-indigo-400 focus:outline-none"
                         aria-invalid={Boolean(errors.message)}
                         aria-describedby={errors.message ? 'contact-message-error' : undefined}
@@ -207,13 +269,13 @@ export default function Contact() {
                       disabled={loading}
                       className="bg-indigo-500 hover:bg-indigo-600 text-white font-medium px-4 py-2 rounded-lg transition disabled:opacity-50"
                     >
-                      {loading ? 'Sending...' : 'Send Message'}
+                      {loading ? t.sending : t.submit}
                     </button>
                   </form>
                 )}
               </div>
             </div>,
-            document.body
+            document.body,
           )
         : null}
     </>

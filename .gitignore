@@ -50,3 +50,7 @@ apps/*/.vercel/
 
 # Package manager cache
 .pnpm-store/
+
+# Act
+bin/
+bin/act
