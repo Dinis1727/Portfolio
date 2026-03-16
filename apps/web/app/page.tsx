@@ -5,6 +5,7 @@ import Image from 'next/image'
 import ProjectCard from './components/ProjectCard'
 import { ArrowRight, Download, Github, Instagram, Linkedin, Mail, Phone } from 'lucide-react'
 import styles from './page.module.css'
+import { staticProjects } from './data/projects'
 
 type Locale = 'pt' | 'en'
 
@@ -112,8 +113,8 @@ const socialLinks = [
 ]
 
 export default function Home() {
-  const [projects, setProjects] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
+  //const [projects, setProjects] = useState<any[]>([])
+  //const [loading, setLoading] = useState(true)
   const [scrollProgress, setScrollProgress] = useState(0)
   const [animatedText, setAnimatedText] = useState('')
   const [roleIndex, setRoleIndex] = useState(0)
@@ -123,6 +124,10 @@ export default function Home() {
   const [locale, setLocale] = useState<Locale>('pt')
 
   const t = copy[locale]
+  const projects = staticProjects.map(project => ({
+    ...project,
+    description: project.description[locale],
+  }))
 
   const scrollToSection = (id: string) => {
     const section = document.getElementById(id)
@@ -145,6 +150,7 @@ export default function Home() {
     return () => window.removeEventListener('portfolio:settings-changed', onSettingsChanged)
   }, [])
 
+  /*
   useEffect(() => {
     const fetchProjects = async () => {
       try {
@@ -161,6 +167,7 @@ export default function Home() {
 
     fetchProjects()
   }, [])
+  */
 
   useEffect(() => {
     setAnimatedText('')
@@ -241,7 +248,8 @@ export default function Home() {
       window.removeEventListener('resize', onScrollOrResize)
       if (frame) window.cancelAnimationFrame(frame)
     }
-  }, [loading, projects.length])
+  //}, [loading, projects.length])
+  }, [projects.length])
 
   useEffect(() => {
     const rows = Array.from(document.querySelectorAll<HTMLElement>(`.${styles.skillsRow}`))
@@ -304,7 +312,8 @@ export default function Home() {
     })
 
     return () => observer.disconnect()
-  }, [locale, loading, projects.length])
+  //}, [locale, loading, projects.length])
+  }, [locale, projects.length])
 
   return (
     <div className={styles.page}>
@@ -446,7 +455,7 @@ export default function Home() {
       <section id="projects" className={`${styles.contentSectionAlt} ${styles.projectsSection}`}>
         <div className={styles.sectionInnerWide}>
           <h2 className={`${styles.sectionTitle} ${styles.textReveal}`}>{t.projectsTitle}</h2>
-          {loading ? (
+          {/*loading ? (
             <p className={`${styles.sectionText} ${styles.textReveal}`}>{t.loadingProjects}</p>
           ) : (
             <div className={styles.projectGrid}>
@@ -462,6 +471,20 @@ export default function Home() {
               ))}
             </div>
           )}
+          */
+          }
+          <div className={styles.projectGrid}>
+            {projects.map(p => (
+              <ProjectCard
+                key={p.id}
+                title={p.title}
+                description={p.description}
+                tags={p.tags}
+                demoUrl={p.demoUrl}
+                className={styles.textReveal}
+              />
+            ))}
+          </div>
         </div>
       </section>
 
