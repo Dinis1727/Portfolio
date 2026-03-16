@@ -11,7 +11,7 @@ async function bootstrap() {
 
 	const config = new DocumentBuilder()
 		.setTitle('Portfolio API')
-		.setDescription('Endpoints para projetos, skills e contacto')
+		.setDescription('Endpoints para projetos, skills e contactos')
 		.setVersion('1.0')
 		.build()
 	const document = SwaggerModule.createDocument(app, config)

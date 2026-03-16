@@ -21,8 +21,8 @@ const copy = {
     heroDescription:
       'Desenvolvedor focado em criar experiências web funcionais e aplicações escaláveis, com arquitetura sólida, performance e código limpo.',
     portfolioBtn: 'Meus Projetos',
-    contactBtn: 'Contacto',
-    downloadBtn: 'Download CV',
+    contactBtn: 'Contactos',
+    downloadBtn: 'Descarregar CV',
     aboutLead:
       'Acredito numa abordagem focada no utilizador, garantindo que cada projeto que desenvolvo é pensado para responder às necessidades reais de quem o utiliza.',
     aboutMini: 'Isto sou eu.',
@@ -60,7 +60,7 @@ const copy = {
     heroDescription:
       'Engineer focused on building functional web experiences and scalable applications with solid architecture, performance, and clean code.',
     portfolioBtn: 'My Projects',
-    contactBtn: 'Contact',
+    contactBtn: 'Contacts',
     downloadBtn: 'Download CV',
     aboutLead:
       'I believe in a user centered approach, ensuring every project I build is tailored to the real needs of its users.',

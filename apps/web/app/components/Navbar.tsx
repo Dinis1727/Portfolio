@@ -35,13 +35,13 @@ const NAV_LINKS: Record<Locale, Array<{ id: string; label: string; icon: LucideI
 }
 
 const LANGUAGE_OPTIONS = [
-  { value: 'pt' as const, code: 'PT', label: 'Português', flag: '🇵🇹' },
-  { value: 'en' as const, code: 'EN', label: 'English', flag: '🇬🇧' },
+  { value: 'pt' as const, code: 'PT', label: 'Português', flagSrc: '/flags/pt.svg' },
+  { value: 'en' as const, code: 'EN', label: 'English', flagSrc: '/flags/en.svg' },
 ]
 
 const PANEL_SOCIAL_LINKS: Array<{ label: string; href: string; external: boolean; icon: LucideIcon }> = [
   { label: 'Github', href: 'https://github.com/Dinis1727', external: true, icon: Github },
-  { label: 'Linkedin', href: 'https://www.linkedin.com/in/dinis-f%C3%A9lix-4baa2030a/', external: true, icon: Linkedin },
+  { label: 'Linkedin', href: 'https://www.linkedin.com/in/dinis-félix-4baa2030a/', external: true, icon: Linkedin },
   { label: 'Instagram', href: 'https://instagram.com/dinis.19_', external: true, icon: Instagram },
   { label: 'CV', href: '/Dinis-Felix-CV.pdf', external: true, icon: FileText },
 ]
@@ -195,17 +195,29 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={() => setLanguageMenuOpen(prev => !prev)}
-                className={`inline-flex items-center gap-2 rounded-md bg-transparent px-3 py-1.5 text-sm transition focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 ${
-                  isLight ? 'text-slate-900 hover:text-indigo-600' : 'text-slate-100 hover:text-indigo-300'
+                className={`inline-flex items-center gap-2 px-0 py-1.5 text-sm transition-all duration-200 focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 ${
+                  isLight
+                    ? 'text-slate-900 hover:text-slate-950'
+                    : 'text-slate-100 hover:text-white'
                 }`}
               >
-                <span className="text-base leading-none">{activeLanguage.flag}</span>
+                <Image
+                  src={activeLanguage.flagSrc}
+                  alt={`Bandeira ${activeLanguage.code}`}
+                  width={20}
+                  height={20}
+                  className="h-5 w-5 rounded-sm object-cover"
+                />
                 <span>{activeLanguage.label}</span>
               </button>
 
               {languageMenuOpen && (
                 <div
-                  className="absolute right-0 mt-2 w-56 overflow-hidden rounded-sm border border-slate-700 bg-slate-950 shadow-xl"
+                  className={`animate-scaleIn absolute right-0 mt-2 w-56 origin-top-right overflow-hidden border shadow-2xl ${
+                    isLight
+                      ? 'border-slate-200 bg-white'
+                      : 'border-slate-800 bg-slate-950'
+                  }`}
                 >
                   {LANGUAGE_OPTIONS.map(option => (
                     <button
@@ -215,14 +227,31 @@ export default function Navbar() {
                         handleLanguageChange(option.value)
                         setLanguageMenuOpen(false)
                       }}
-                      className={`flex w-full items-center gap-3 border-b border-slate-800 px-4 py-3 text-left text-sm transition last:border-b-0 ${
-                        locale === option.value
-                          ? 'bg-slate-700 text-slate-100'
-                          : 'text-slate-100 hover:bg-slate-900'
+                      className={`group relative flex w-full items-center gap-3 border-b px-4 py-4 text-left text-sm transition-all duration-200 last:border-b-0 ${
+                        isLight
+                          ? locale === option.value
+                            ? 'border-slate-200 bg-slate-200 text-slate-950'
+                            : 'border-slate-200 text-slate-700 hover:bg-slate-100/70 hover:text-slate-950'
+                          : locale === option.value
+                            ? 'border-white/10 bg-slate-800 text-white'
+                            : 'border-white/10 text-slate-100 hover:bg-slate-900 hover:text-white'
                       }`}
                     >
-                      <span className="w-7 text-lg leading-none">{option.flag}</span>
-                      <span className="text-sm">{option.label}</span>
+                      <span
+                        className={`absolute bottom-0 left-0 top-0 w-1 transition-all duration-200 ${
+                          isLight ? 'bg-black' : 'bg-white'
+                        } ${
+                          locale === option.value ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                        }`}
+                      />
+                      <Image
+                        src={option.flagSrc}
+                        alt={`Bandeira ${option.code}`}
+                        width={28}
+                        height={20}
+                        className="h-5 w-7 rounded-sm object-cover shadow-sm"
+                      />
+                      <span className="text-sm font-medium">{option.label}</span>
                     </button>
                   ))}
                 </div>
